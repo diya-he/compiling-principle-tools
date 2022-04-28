@@ -136,7 +136,8 @@ class DFA:
         print('起始状态', self.start_states)
         print('转化路径', self.transition_functions)
 
-    def save_dfa_json(self):
+
+    def simple_state_dfa(self):
         state_0_ = self.states[0]
         state_1_ = self.states[1]
         state_2_ = self.states[2]
@@ -184,16 +185,16 @@ class DFA:
             elif t[2] == state_2_:
                 temple.append('2')
             self.transition_functions[index] = tuple(temple)
-            index = index+1
+            index = index + 1
 
-        dict = [
-            {
-                "num_states": self.num_states,
-                "symbols": self.symbols,
-                "end_states": self.end_states,
-                "start_states": self.start_states,
-                "transition_functions": self.transition_functions
-            }
-        ]
+    def save_dfa_json(self):
+        self.simple_state_dfa()
+        dict = {
+            "num_states": self.num_states,
+            "symbols": self.symbols,
+            "end_states": self.end_states,
+            "start_states": self.start_states,
+            "transition_functions": self.transition_functions
+        }
         with open("dfa.json", "w") as json_file:
             json_dict = json.dump(dict, json_file)
