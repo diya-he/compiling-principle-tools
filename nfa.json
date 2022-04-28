@@ -1,0 +1,12 @@
+{
+  "num_states":2,
+  "symbols": ["a","b"],
+  "end_states": ["1"],
+  "start_states": ["0"],
+  "transition_functions": [
+    ["0", "a", "0"],
+    ["0", "a", "1"],
+    ["0", "b", "1"],
+    ["1", "b", "1"]
+  ]
+}
