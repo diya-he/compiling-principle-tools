@@ -129,3 +129,4 @@ class minimalDFA:
                     if mapping_path[sym][status1[0]] in status2:
                         self.transition_functions.append((status1, sym, status2))
                         break
+
