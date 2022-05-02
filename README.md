@@ -15,7 +15,8 @@
 }
 ```
 
-`finite_automata.py`封装了两个类，一个是NFA，一个是DFA，本代码使用状态表法进行转化，时间复杂度初步计算为`O(n^3)`
+`finite_automata.py`封装了几个类，本代码使用造表法进行转化，时间复杂度初步计算为`O(n^3)`
+等项目写完后预计会写一份使用文档
 
 ```python
 #NFA to DFA test
