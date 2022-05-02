@@ -30,8 +30,8 @@ class NFA:
                     state_table.append(trans[2])
         return state_table
 
-    def construct_nfa_from_file(self, lines):
-        nfa_json = json.load(open('nfa.json', 'r', encoding="utf-8"))
+    def construct_nfa_from_file(self, lines, filepath):
+        nfa_json = json.load(open(filepath, 'r', encoding="utf-8"))
         self.num_states = nfa_json['num_states']
         for i in range(self.num_states):
             self.states.append(str(i))
@@ -42,34 +42,6 @@ class NFA:
         for t in transition:
             transition_function = (t[0], t[1], t[2])
             self.transition_functions.append(transition_function)
-        # self.num_states = int(lines[0])
-        # self.init_states() #0,1,2
-        # self.symbols = list(lines[1].strip())
-        #
-        # end_states_line = lines[2].split(" ")
-        # for index in range(len(end_states_line)):
-        #     if index == len(end_states_line) - 1:
-        #         self.end_states.append(end_states_line[index].split('\n')[0])
-        #     else:
-        #         self.end_states.append(end_states_line[index])
-        #
-        # start_states_line = lines[3].split(" ")
-        # for index in range(len(start_states_line)):
-        #     if index == len(start_states_line) - 1:
-        #         self.start_states.append(start_states_line[index].split('\n')[0])
-        #     else:
-        #         self.start_states.append(start_states_line[index])
-        #
-        # for index in range(4, len(lines)):
-        #     transition_func_line = lines[index].split(" ")
-        #
-        #     starting_state = str(transition_func_line[0])
-        #     transition_symbol = transition_func_line[1]
-        #     ending_state = str(transition_func_line[2]).split('\n')[0]
-        #
-        #     transition_function = (starting_state, transition_symbol, ending_state);
-        #     self.transition_functions.append(transition_function)
-
 
 
 class DFA:
@@ -81,6 +53,18 @@ class DFA:
         self.start_states = []
         self.transition_functions = []
 
+    def construct_dfa_from_file(self, lines, filepath):
+        nfa_json = json.load(open(filepath, 'r', encoding="utf-8"))
+        self.num_states = nfa_json['num_states']
+        for i in range(self.num_states):
+            self.states.append(str(i))
+        self.symbols = nfa_json['symbols']
+        self.end_states = nfa_json['end_states']
+        self.start_states = nfa_json['start_states']
+        transition = nfa_json['transition_functions']
+        for t in transition:
+            transition_function = (t[0], t[1], t[2])
+            self.transition_functions.append(transition_function)
 
     def convert_from_nfa(self, nfa):
         self.symbols = nfa.symbols
@@ -187,7 +171,7 @@ class DFA:
             self.transition_functions[index] = tuple(temple)
             index = index + 1
 
-    def save_dfa_json(self):
+    def save_dfa_json(self, filepath):
         self.simple_state_dfa()
         dict = {
             "num_states": self.num_states,
@@ -196,5 +180,5 @@ class DFA:
             "start_states": self.start_states,
             "transition_functions": self.transition_functions
         }
-        with open("dfa.json", "w") as json_file:
+        with open(filepath, "w") as json_file:
             json_dict = json.dump(dict, json_file)

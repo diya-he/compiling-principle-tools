@@ -9,15 +9,17 @@ import sys
 #     print("Please update python to version 2.0 or newer")
 #     quit()
 
-file = open('nfa.json', 'r')
+file = open('../data/nfa.json', 'r')
 lines = file.readlines()
 file.close()
 
 nfa = NFA()
 dfa = DFA()
 
-nfa.construct_nfa_from_file(lines)
-# nfa.print_nfa()
+filepath = '../data/nfa.json'
+nfa.construct_nfa_from_file(lines, filepath)
+nfa.print_nfa()
 dfa.convert_from_nfa(nfa)
-dfa.save_dfa_json()
-# dfa.print_dfa()
+filepath = "../data/dfa.json"
+dfa.save_dfa_json(filepath)
+dfa.print_dfa()
