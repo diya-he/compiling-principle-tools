@@ -81,7 +81,7 @@ class minimalDFA:
         self.transition_functions = []
 
     def mapping_array(self, mapping_dict, states_list):
-
+        # print(mapping_dict)
         for sym in self.symbols:
             for states_key in states_list:
                 if len(states_key) == 1:
@@ -92,7 +92,8 @@ class minimalDFA:
                     template_list = []
                     # 从key中取数映射到value
                     for key in states_key:
-                        if mapping_dict[sym][key] in states_value and len(states_key) > 1:
+                        # print(key)
+                        if (mapping_dict[sym][key] in states_value) and (len(states_key) > 1):
                             template_list.append(key)
                             states_key.remove(key)
                     if template_list != []:
@@ -116,11 +117,13 @@ class minimalDFA:
         mapping_path = {}
         for sym in dfa.symbols:
             mapping_path[sym] = {}
+            for i in range(dfa.num_states):
+                mapping_path[sym][str(i)] = 'null'
+        for sym in dfa.symbols:
             for tran in dfa.transition_functions:
                 if tran[1] == sym:
                     mapping_path[sym][tran[0]] = tran[2]
 
-        # print(mapping_path)
         # for sym in dfa.symbols:
         #     for status in status_list:
         #         new_cl = []

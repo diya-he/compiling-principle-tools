@@ -5,10 +5,10 @@
     "b"
   ],
   "end_states": [
-    "2"
+    "4"
   ],
   "start_states": [
-    "1"
+    "2"
   ],
   "transition_functions": [
     [
