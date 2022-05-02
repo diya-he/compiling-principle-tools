@@ -15,34 +15,38 @@
 }
 ```
 
-`finite_automata.py`封装了两个类，一个是NFA，一个是DFA，本代码使用状态表法进行转化，时间复杂度初步计算为`O(n^3)`希望有大佬进行改进qwq
+`finite_automata.py`封装了两个类，一个是NFA，一个是DFA，本代码使用状态表法进行转化，时间复杂度初步计算为`O(n^3)`
 
->代码流程在mian文件里，应该不难理解
 ```python
+#NFA to DFA test
 from finite_automata import NFA, DFA
-import sys
-filename = input('Enter the name of the NFA file: ')
-
-if sys.version_info >= (3, 0):
-    filename = input('Enter the name of the NFA file: ')
-elif sys.version_info >= (2, 0):
-    filename = raw_input('Enter the name of the NFA file: ')
-else:
-    print("Please update python to version 2.0 or newer")
-    quit()
-
-file = open(filename, 'r')
-lines = file.readlines()
-file.close()
-
+import FAtools as fat
 nfa = NFA()
 dfa = DFA()
 
-nfa.construct_nfa_from_file(lines)
+filepath = '../data/nfa.json'
+fat.construct_from_file(nfa, filepath)
+# fat.print_fa(nfa)
 
 dfa.convert_from_nfa(nfa)
+filepath = "../data/dfa.json"
+fat.simple_state_fa(dfa)
+fat.save_fa_to_json(dfa, filepath)
+fat.print_fa(dfa)
+```
+```python
+#minimize nfa test
+from finite_automata import DFA,minimalDFA
+import FAtools as fat
+dfa = DFA()
+minimalDFA = minimalDFA()
 
-dfa.print_dfa()
+fat.construct_from_file(dfa, '../data/dfa.json')
+minimalDFA.minimize_from_dfa(dfa)
 
+fat.print_fa(minimalDFA)
 
+fat.simple_state_fa(minimalDFA)
+# fat.print_fa(minimalDFA)
+fat.save_fa_to_json(minimalDFA, '../data/minimal_dfa.json')
 ```
