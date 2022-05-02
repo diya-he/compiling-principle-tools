@@ -81,7 +81,6 @@ class minimalDFA:
         self.transition_functions = []
 
     def mapping_array(self, mapping_dict, states_list):
-        # print(mapping_dict)
         for sym in self.symbols:
             for states_key in states_list:
                 if len(states_key) == 1:
