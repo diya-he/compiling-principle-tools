@@ -6,7 +6,7 @@ def init_states(fa):
 
 def construct_from_file(fa, filepath):
     nfa_json = json.load(open(filepath, 'r', encoding="utf-8"))
-    fa.num_states = nfa_json['num_states']
+    fa.num_states  = nfa_json['num_states']
     init_states(fa)
     fa.symbols = nfa_json['symbols']
     fa.end_states = nfa_json['end_states']

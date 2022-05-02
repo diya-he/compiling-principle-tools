@@ -1,3 +1,4 @@
+import copy
 import json
 
 class NFA:
@@ -79,7 +80,28 @@ class minimalDFA:
         self.start_states = []
         self.transition_functions = []
 
+    def mapping_array(self, mapping_dict, states_list):
+
+        for sym in self.symbols:
+            for states_key in states_list:
+                if len(states_key) == 1:
+                    continue
+                for states_value in states_list:
+                    if len(states_key) == 1:
+                        continue
+                    template_list = []
+                    # 从key中取数映射到value
+                    for key in states_key:
+                        if mapping_dict[sym][key] in states_value and len(states_key) > 1:
+                            template_list.append(key)
+                            states_key.remove(key)
+                    if template_list != []:
+                        states_list.append(template_list)
+
+
     def minimize_from_dfa(self, dfa):
+        self.symbols = dfa.symbols
+
         list_a = dfa.end_states
         list_b = []
         for i in dfa.states:
@@ -87,6 +109,9 @@ class minimalDFA:
                 list_b.append(i)
         # print(list_a)
         # print(list_b)
+        status_list = []
+        status_list.append(list_a)
+        status_list.append(list_b)
         #映射路径到字典
         mapping_path = {}
         for sym in dfa.symbols:
@@ -96,25 +121,23 @@ class minimalDFA:
                     mapping_path[sym][tran[0]] = tran[2]
 
         # print(mapping_path)
-        status_list = []
-        status_list.append(list_a)
-        status_list.append(list_b)
-        for sym in dfa.symbols:
-            for status in status_list:
-                new_cl = []
-                for i in status:
-                    if mapping_path[sym][i] not in status:
-                        # print(mapping_path[sym][i])
-                        if( len(status) > 1 ):
-                            new_cl.append(i)
-                            status.remove(i)
-                if len(new_cl):
-                    status_list.append(new_cl)
-        # print(status_list)
+        # for sym in dfa.symbols:
+        #     for status in status_list:
+        #         new_cl = []
+        #         for i in status:
+        #             if mapping_path[sym][i] not in status:
+        #                 # print(mapping_path[sym][i])
+        #                 if( len(status) > 1 ):
+        #                     new_cl.append(i)
+        #                     status.remove(i)
+        #         if len(new_cl) and len(status):
+        #             status_list.append(new_cl)
+        self.mapping_array(mapping_path, status_list)
 
+        # print(status_list)
         self.num_states = len(status_list)
         self.states = status_list
-        self.symbols = dfa.symbols
+
         for status in status_list:
             for d in dfa.start_states:
                 if d in status and status not in self.start_states:
