@@ -55,3 +55,4 @@ def save_fa_to_json(fa, filepath):
     }
     with open(filepath, "w") as json_file:
         json_dict = json.dump(dict, json_file)
+

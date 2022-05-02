@@ -12,3 +12,4 @@ filepath = "../data/dfa.json"
 fat.simple_state_fa(dfa)
 fat.save_fa_to_json(dfa, filepath)
 fat.print_fa(dfa)
+
