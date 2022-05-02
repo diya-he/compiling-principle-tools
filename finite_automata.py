@@ -9,40 +9,12 @@ class NFA:
         self.start_states = []
         self.transition_functions = []
 
-
-    def init_states(self):
-        for i in list(range(self.num_states)):
-            self.states.append(str(i))
-
-
-    def print_nfa(self):
-        print(self.num_states)
-        print(self.states)
-        print(self.symbols)
-        print(self.end_states)
-        print(self.start_states)
-        print(self.transition_functions)
-
     def e_closure(self, state_table):
         for state in state_table:
             for trans in self.transition_functions:
                 if state == trans[0] and trans[1] == '$':
                     state_table.append(trans[2])
         return state_table
-
-    def construct_nfa_from_file(self, lines, filepath):
-        nfa_json = json.load(open(filepath, 'r', encoding="utf-8"))
-        self.num_states = nfa_json['num_states']
-        for i in range(self.num_states):
-            self.states.append(str(i))
-        self.symbols = nfa_json['symbols']
-        self.end_states = nfa_json['end_states']
-        self.start_states = nfa_json['start_states']
-        transition = nfa_json['transition_functions']
-        for t in transition:
-            transition_function = (t[0], t[1], t[2])
-            self.transition_functions.append(transition_function)
-
 
 class DFA:
     def __init__(self):
@@ -52,19 +24,6 @@ class DFA:
         self.end_states = []
         self.start_states = []
         self.transition_functions = []
-
-    def construct_dfa_from_file(self, lines, filepath):
-        nfa_json = json.load(open(filepath, 'r', encoding="utf-8"))
-        self.num_states = nfa_json['num_states']
-        for i in range(self.num_states):
-            self.states.append(str(i))
-        self.symbols = nfa_json['symbols']
-        self.end_states = nfa_json['end_states']
-        self.start_states = nfa_json['start_states']
-        transition = nfa_json['transition_functions']
-        for t in transition:
-            transition_function = (t[0], t[1], t[2])
-            self.transition_functions.append(transition_function)
 
     def convert_from_nfa(self, nfa):
         self.symbols = nfa.symbols
@@ -111,74 +70,62 @@ class DFA:
                         self.start_states.append(state)
                         break
 
+class minimalDFA:
+    def __init__(self):
+        self.num_states = 0
+        self.states = []
+        self.symbols = []
+        self.end_states = []
+        self.start_states = []
+        self.transition_functions = []
 
-    def print_dfa(self):
-        print('节点数量：', self.num_states)
-        print('节点', self.states)
-        print('路径', self.symbols)
-        print('终止状态', self.end_states)
-        print('起始状态', self.start_states)
-        print('转化路径', self.transition_functions)
+    def minimize_from_dfa(self, dfa):
+        list_a = dfa.end_states
+        list_b = []
+        for i in dfa.states:
+            if i not in list_a:
+                list_b.append(i)
+        # print(list_a)
+        # print(list_b)
+        #映射路径到字典
+        mapping_path = {}
+        for sym in dfa.symbols:
+            mapping_path[sym] = {}
+            for tran in dfa.transition_functions:
+                if tran[1] == sym:
+                    mapping_path[sym][tran[0]] = tran[2]
 
+        # print(mapping_path)
+        status_list = []
+        status_list.append(list_a)
+        status_list.append(list_b)
+        for sym in dfa.symbols:
+            for status in status_list:
+                new_cl = []
+                for i in status:
+                    if mapping_path[sym][i] not in status:
+                        # print(mapping_path[sym][i])
+                        if( len(status) > 1 ):
+                            new_cl.append(i)
+                            status.remove(i)
+                if len(new_cl):
+                    status_list.append(new_cl)
+        # print(status_list)
 
-    def simple_state_dfa(self):
-        state_0_ = self.states[0]
-        state_1_ = self.states[1]
-        state_2_ = self.states[2]
-        index = 0
-        for s in self.states:
-            if s == state_0_:
-                self.states[index] = '0'
-            elif s == state_1_:
-                self.states[index] = '1'
-            elif s == state_2_:
-                self.states[index] = '2'
-            index = index + 1
-        index = 0
-        for s in self.end_states:
-            if s == state_0_:
-                self.end_states[index] = '0'
-            elif s == state_1_:
-                self.end_states[index] = '1'
-            elif s == state_2_:
-                self.end_states[index] = '2'
-            index = index + 1
-        index = 0
-        for s in self.start_states:
-            if s == state_0_:
-                self.start_states[index] = '0'
-            elif s == state_1_:
-                self.start_states[index] = '1'
-            elif s == state_2_:
-                self.start_states[index] = '2'
-            index = index + 1
-        index = 0
-        for t in self.transition_functions:
-            temple = []
-            if t[0] == state_0_:
-                temple.append('0')
-            elif t[0] == state_1_:
-                temple.append('1')
-            elif t[0] == state_2_:
-                temple.append('2')
-            temple.append(t[1])
-            if t[2] == state_0_:
-                temple.append('0')
-            elif t[2] == state_1_:
-                temple.append('1')
-            elif t[2] == state_2_:
-                temple.append('2')
-            self.transition_functions[index] = tuple(temple)
-            index = index + 1
-
-    def save_dfa_json(self, filepath):
-        self.simple_state_dfa()
-        dict = {
-            "num_states": self.num_states,
-            "symbols": self.symbols,
-            "end_states": self.end_states,
-            "start_states": self.start_states,
-            "transition_functions": self.transition_functions
-        }
-        with open(filepath, "w") as json_file:
-            json_dict = json.dump(dict, json_file)
+        self.num_states = len(status_list)
+        self.states = status_list
+        self.symbols = dfa.symbols
+        for status in status_list:
+            for d in dfa.start_states:
+                if d in status and status not in self.start_states:
+                    self.start_states.append(status)
+        for status in status_list:
+            for d in dfa.end_states:
+                if d in status and status not in self.end_states:
+                    self.end_states.append(status)
+        for status1 in status_list:
+            for status2 in status_list:
+                for sym in self.symbols:
+                    if mapping_path[sym][status1[0]] in status2:
+                        self.transition_functions.append((status1, sym, status2))
+                        break
