@@ -29,11 +29,11 @@ def simple_state_fa(fa):
     mapping_table = {}
     for i in range(len(fa.states)):
         mapping_table[str(fa.states[i])] = str(i)
-
+    print(mapping_table)
     for i in range(len(fa.end_states)):
-        fa.end_states[i] = mapping_table[str(fa.states[i])]
+        fa.end_states[i] = mapping_table[str(fa.end_states[i])]
     for i in range(len(fa.start_states)):
-        fa.start_states[i] = mapping_table[str(fa.states[i])]
+        fa.start_states[i] = mapping_table[str(fa.start_states[i])]
     new_transition = []
     for transition in (fa.transition_functions):
         tup = (mapping_table[str(transition[0])], transition[1], mapping_table[str(transition[2])])
