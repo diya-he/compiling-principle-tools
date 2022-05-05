@@ -80,23 +80,24 @@ class minimalDFA:
         self.start_states = []
         self.transition_functions = []
 
-    def mapping_array(self, mapping_dict, states_list):
-        for sym in self.symbols:
-            for states_key in states_list:
+    def __mapping_array(self, mapping_dict, states_list, sym):
+        for states_key in states_list:
+            if len(states_key) == 1:
+                continue
+            for states_value in states_list:
                 if len(states_key) == 1:
                     continue
-                for states_value in states_list:
-                    if len(states_key) == 1:
-                        continue
-                    template_list = []
-                    # 从key中取数映射到value
-                    for key in states_key:
-                        # print(key)
-                        if (mapping_dict[sym][key] in states_value) and (len(states_key) > 1):
-                            template_list.append(key)
-                            states_key.remove(key)
-                    if template_list != []:
-                        states_list.append(template_list)
+                template_list = []
+                # 从key中取数映射到value
+                for key in states_key:
+                    # print(key)
+                    if (mapping_dict[sym][key] in states_value):
+                        template_list.append(key)
+                        states_key.remove(key)
+                if states_key==[]:
+                    states_list.remove(states_key)
+                if template_list != []:
+                    states_list.append(template_list)
 
 
     def minimize_from_dfa(self, dfa):
@@ -134,7 +135,14 @@ class minimalDFA:
         #                     status.remove(i)
         #         if len(new_cl) and len(status):
         #             status_list.append(new_cl)
-        self.mapping_array(mapping_path, status_list)
+        while 1:
+            status_list_bac = copy.deepcopy(status_list)
+            for symbol in self.symbols:
+                self.__mapping_array(mapping_path, status_list, symbol)
+            for symbol in reversed(self.symbols):
+                self.__mapping_array(mapping_path, status_list, symbol)
+            if status_list_bac == status_list:
+                break
 
         # print(status_list)
         self.num_states = len(status_list)
