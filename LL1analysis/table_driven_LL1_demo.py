@@ -61,6 +61,9 @@ if __name__ == '__main__':
     for s in reversed(input_string):
         str_stack.append(s)
 
+    if str_stack[0] != '#':
+        message('error', 'ERROR: expect #')
+
     analysis_stack = ['#']
     analysis_stack.append('S')
 
@@ -71,5 +74,3 @@ if __name__ == '__main__':
 
     if not (len(analysis_stack) and len(str_stack)):
         message('success', '分析成功')
-    else:
-        message('error', 'ERROR: expect #')
