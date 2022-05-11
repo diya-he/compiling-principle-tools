@@ -29,7 +29,7 @@ def simple_state_fa(fa):
     mapping_table = {}
     for i in range(len(fa.states)):
         mapping_table[str(fa.states[i])] = str(i)
-    print(mapping_table)
+    # print(mapping_table)
     for i in range(len(fa.end_states)):
         fa.end_states[i] = mapping_table[str(fa.end_states[i])]
     for i in range(len(fa.start_states)):

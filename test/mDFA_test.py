@@ -3,7 +3,7 @@ import FAtools as fat
 dfa = DFA()
 minimalDFA = minimalDFA()
 
-fat.construct_from_file(dfa, '../data/dfa.json')
+fat.construct_from_file(dfa, '../data/dfa_test_2.json')
 minimalDFA.minimize_from_dfa(dfa)
 
 fat.print_fa(minimalDFA)
