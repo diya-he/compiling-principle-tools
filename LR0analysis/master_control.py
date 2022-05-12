@@ -47,11 +47,23 @@ def init_analysis_table():
     }
     return action, goto
 
+
+def message(status, message):
+    if status == 'success':
+        print(message + '\n')
+    elif status == 'error':
+        print(message + '\n')
+    exit(0)
+
+
 def analysis(status_stack, sym_stack, input_stack, *args):
     status = status_stack[-1]
-    sym_stack = sym_stack[-1]
-    input_stack = input_stack[-1]
-    
+    sym = sym_stack[-1]
+    string = input_stack[-1]
+    if action[status][sym] < 99999999999:
+        pass
+    elif action[status][sym] == 'acc':
+        pass
 
 if __name__ == '__main__':
     input_string = 'ab#'
