@@ -82,7 +82,7 @@ def analysis(status_stack, sym_stack, input_stack, *args):
 
 
 if __name__ == '__main__':
-    input_string = 'ab#'
+    input_string = 'aba#'
     input_stack = []
     for s in reversed(input_string):
         input_stack.append(s)
