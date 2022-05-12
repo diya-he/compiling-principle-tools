@@ -58,8 +58,8 @@ def message(status, message):
 
 def analysis(status_stack, sym_stack, input_stack, *args):
     status = status_stack[-1]
-    sym = sym_stack[-1]
     string = input_stack[-1]
+    record = ''
     try:
         record = action[status][string]
     except:
@@ -79,7 +79,6 @@ def analysis(status_stack, sym_stack, input_stack, *args):
                 message('error', 'syntax error')
         sym_stack.append(record[0])
         status_stack.append(goto[status_stack[-1]][sym_stack[-1]])
-
 
 
 if __name__ == '__main__':
@@ -108,8 +107,4 @@ if __name__ == '__main__':
     if len(input_stack) != 1:
         message('error', 'syntax error')
     else:
-        message('success','分析成功')
-    
-    
-
-    
+        message('success', '分析成功')

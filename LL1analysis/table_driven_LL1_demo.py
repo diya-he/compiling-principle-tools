@@ -13,9 +13,9 @@
 
 def message(status, message):
     if status == 'success':
-        print(message + '\n')
+        print(message)
     elif status == 'error':
-        print(message + '\n')
+        print(message)
     exit(0)
 
 
@@ -56,7 +56,7 @@ def analysis(analysis_stack, str_stack):
 
 
 if __name__ == '__main__':
-    input_string = 'babaabaabaabaabaabaabaabaaba#'
+    input_string = 'babaabaaba#'
     str_stack = []
     for s in reversed(input_string):
         str_stack.append(s)
