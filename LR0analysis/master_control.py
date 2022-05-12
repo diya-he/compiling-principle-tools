@@ -1,48 +1,48 @@
 def init_analysis_table():
     action = {
-        '0':{
-            'a':'B',
-            'b':'D'
+        '0': {
+            'a': 'B',
+            'b': 'D'
         },
-        '1':{
-            '#':'acc'
+        '1': {
+            '#': 'acc'
         },
-        '2':{
-            'a':'4'
+        '2': {
+            'a': '4'
         },
-        '3':{
-            'b':'5'
+        '3': {
+            'b': '5'
         },
-        '4':{
-            'b':'B'
+        '4': {
+            'b': 'B'
         },
-        '5':{
-            'a':'D'
+        '5': {
+            'a': 'D'
         },
-        '6':{
-            'b':'8'
+        '6': {
+            'b': '8'
         },
-        '7':{
-            'a':'9'
+        '7': {
+            'a': '9'
         },
-        '8':{
-            '#':'ABaBb'
+        '8': {
+            '#': 'ABaBb'
         },
-        '9':{
-            '#':'ADbDa'
+        '9': {
+            '#': 'ADbDa'
         }
     }
     goto = {
-        '0':{
-            'A':'1',
-            'B':'2',
-            'D':'3'
+        '0': {
+            'A': '1',
+            'B': '2',
+            'D': '3'
         },
-        '4':{
-            'B':'6'
+        '4': {
+            'B': '6'
         },
-        '5':{
-            'D':'7'
+        '5': {
+            'D': '7'
         },
     }
     return action, goto
@@ -73,7 +73,7 @@ def analysis(status_stack, sym_stack, input_stack, *args):
     else:
         lens = len(record) - 1
         for i in range(lens):
-            if sym_stack.pop() == record[lens-1]:
+            if sym_stack.pop() == record[lens - 1]:
                 status_stack.pop()
             else:
                 message('error', 'syntax error')
@@ -89,7 +89,7 @@ if __name__ == '__main__':
 
     if input_stack[0] != '#':
         message('error', 'ERROR: expect #')
-    
+
     sym_stack = []
     sym_stack.append('#')
 
@@ -103,7 +103,7 @@ if __name__ == '__main__':
         print('符号栈:', sym_stack)
         print('输入栈:', input_stack)
         analysis(status_stack, sym_stack, input_stack, action, goto)
-    
+
     if len(input_stack) != 1:
         message('error', 'syntax error')
     else:
