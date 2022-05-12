@@ -82,7 +82,7 @@ def analysis(status_stack, sym_stack, input_stack, *args):
 
 
 if __name__ == '__main__':
-    input_string = 'aba#'
+    input_string = 'ab#'
     input_stack = []
     for s in reversed(input_string):
         input_stack.append(s)
@@ -107,4 +107,4 @@ if __name__ == '__main__':
     if len(input_stack) != 1:
         message('error', 'syntax error')
     else:
-        message('success', '分析成功')
+        message('success', 'analysis success')
