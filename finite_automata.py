@@ -1,5 +1,4 @@
 import copy
-import json
 
 
 class NFA:
@@ -74,96 +73,76 @@ class DFA:
                         break
 
 
-class minimalDFA:
-    def __init__(self):
-        self.num_states = 0
-        self.states = []
-        self.symbols = []
-        self.end_states = []
-        self.start_states = []
-        self.transition_functions = []
+    def __function(self, S0s, cin):  # 获得S0状态下输入cin的所有输出，closure=__function(S0,'ε')
+        result = []
+        for S0 in S0s:
+            for f in self.transition_functions:
+                if f[0] == S0 and f[1] == cin:
+                    return f[2]
+        return None
+    def __get_cls_n(self, S0s, ele):
+        for i in S0s:
+            if ele in i:
+                return S0s.index(i)
 
-    def __mapping_array(self, mapping_dict, states_list, sym):
-        new_states_list = copy.deepcopy(states_list)
-        for states_key in states_list:
-            if len(states_key) <= 1:
-                continue
-            for states_value in new_states_list:
-                if len(states_key) <= 1:
-                    continue
-                template_list = []
-                # 从key中取数映射到value
-                new_states_key = copy.deepcopy(states_key)
-                for key in new_states_key:
-                    # print(key)
-                    if mapping_dict[sym][key] in states_value:
-                        template_list.append(key)
-                        states_key.remove(key)
-                if states_key == []:
-                    states_list.remove(states_key)
-                if template_list != []:
-                    states_list.append(template_list)
-            new_states_list = copy.deepcopy(states_list)
-    def minimize_from_dfa(self, dfa):
-        self.symbols = dfa.symbols
+    def __equ(self, l1, l2):
+        for i in l1:
+            flag = 1
+            for j in l2:
+                if set(i)==set(j):
+                    flag = 0
+            if flag==1:
+                return False
+        return True
 
-        list_a = dfa.end_states
-        list_b = []
-        for i in dfa.states:
-            if i not in list_a:
-                list_b.append(i)
-        # print(list_a)
-        # print(list_b)
-        status_list = []
-        status_list.append(list_a)
-        status_list.append(list_b)
-        # 映射路径到字典
-        mapping_path = {}
-        for sym in dfa.symbols:
-            mapping_path[sym] = {}
-            for i in range(dfa.num_states):
-                mapping_path[sym][str(i)] = 'null'
-        for sym in dfa.symbols:
-            for tran in dfa.transition_functions:
-                if tran[1] == sym:
-                    mapping_path[sym][tran[0]] = tran[2]
-
-        # for sym in dfa.symbols:
-        #     for status in status_list:
-        #         new_cl = []
-        #         for i in status:
-        #             if mapping_path[sym][i] not in status:
-        #                 # print(mapping_path[sym][i])
-        #                 if( len(status) > 1 ):
-        #                     new_cl.append(i)
-        #                     status.remove(i)
-        #         if len(new_cl) and len(status):
-        #             status_list.append(new_cl)
-        while 1:
-            status_list_bac = copy.deepcopy(status_list)
-            for symbol in self.symbols:
-                self.__mapping_array(mapping_path, status_list, symbol)
-            for symbol in reversed(self.symbols):
-                self.__mapping_array(mapping_path, status_list, symbol)
-            if status_list_bac == status_list:
+    def minilization(self, S0s): # S0s为初态和终态集合的列表，[（1，2，3），（4，5）]
+        result = copy.deepcopy(S0s)
+        mappings = []
+        while True:
+            mappings.clear()
+            for Cls in S0s:
+                array = []       # array记录每个元素过某个输入后得到的元素
+                mapping = dict()  # mapping映射字典，键值为array中的元素，值为S0中的原始元素集合
+                for ele in Cls:
+                    array.append([self.__get_cls_n(S0s, self.__function(ele, cin)) for cin in self.symbols])
+                for i in range(len(array)):
+                    if str(array[i]) in mapping:
+                        mapping[str(array[i])].append(Cls[i])
+                    else:
+                        mapping[str(array[i])] = [Cls[i]]
+                for key in mapping:
+                    mappings.append(mapping[key])
+            Cls = mappings
+            if self.__equ(mappings, Cls):
                 break
-        # for symbol in self.symbols:
-        #     self.__mapping_array(mapping_path, status_list, symbol)
-        # print(status_list)
-        self.num_states = len(status_list)
-        self.states = status_list
 
-        for status in status_list:
-            for d in dfa.start_states:
-                if d in status and status not in self.start_states:
-                    self.start_states.append(status)
-        for status in status_list:
-            for d in dfa.end_states:
-                if d in status and status not in self.end_states:
-                    self.end_states.append(status)
-        for status1 in status_list:
-            for status2 in status_list:
-                for sym in self.symbols:
-                    if mapping_path[sym][status1[0]] in status2:
-                        self.transition_functions.append((status1, sym, status2))
-                        break
+        self.states = mappings
+        self.num_states = len(mappings)
+        tmp_list = []
+        for state in self.end_states:
+            for map in mappings:
+                if state in map and map not in tmp_list:
+                    tmp_list.append(map)
+                    break
+        self.end_states = tmp_list
+
+        tmp_list = []
+        for state in self.start_states:
+            for map in mappings:
+                if state in map and map not in tmp_list:
+                    tmp_list.append(map)
+                    break
+        self.start_states = tmp_list
+
+        tmp_transition = []
+        for transition in self.transition_functions:
+            first = []
+            third = []
+            for map in mappings:
+                if transition[0] in map:
+                    first = map
+                if transition[2] in map:
+                    third = map
+            if (first, transition[1], third) not in tmp_transition:
+                tmp_transition.append((first, transition[1], third))
+        self.transition_functions = tmp_transition

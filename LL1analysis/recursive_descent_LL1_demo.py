@@ -1,11 +1,11 @@
-# S->Aa|b
+# start_states->Aa|b
 # A->SB
 # B->ab
 
-# S->bA
+# start_states->bA
 # A->abaA|$
 
-# SELECT(S->bA) = {b}
+# SELECT(start_states->bA) = {b}
 # SELECT(A->abaA) = {a}
 # SELECT(A->$) = {#}
 def message(status, message):

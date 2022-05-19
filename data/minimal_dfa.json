@@ -1,1 +1,1 @@
-{"num_states": 3, "symbols": ["a", "b"], "end_states": ["0"], "start_states": ["2"], "transition_functions": [["0", "a", "2"], ["1", "b", "0"], ["1", "a", "1"], ["2", "a", "1"], ["2", "b", "2"]]}
+{"num_states": 4, "symbols": ["a", "b"], "end_states": ["0"], "start_states": ["2", "3", "0"], "transition_functions": [["2", "b", "3"], ["3", "a", "0"], ["3", "b", "3"], ["0", "a", "0"], ["0", "b", "3"], ["3", "b", "1"], ["1", "a", "3"], ["1", "b", "1"]]}

@@ -1,14 +1,14 @@
-# S->Aa|b
+# start_states->Aa|b
 # A->SB
 # B->ab
 
 #       a       b       #
-# S           S->bA
+# start_states           start_states->bA
 # A  A->abaA          A->$
 
 
 # 步骤     分析栈     剩余输入串       推导所用产生式或匹配
-# 1       #S       babaaba#         S->bA
+# 1       #start_states       babaaba#         start_states->bA
 # 2       #Ab      babaaba#         b匹配
 
 def message(status, message):
@@ -41,7 +41,7 @@ def A(analysis_stack, str):
 
 def analysis(analysis_stack, str_stack):
     analysis = analysis_stack[-1]
-    if analysis == 'S':
+    if analysis == 'start_states':
         S(analysis_stack)
     elif analysis == 'A':
         str = str_stack[-1]
@@ -65,7 +65,7 @@ if __name__ == '__main__':
         message('error', 'ERROR: expect #')
 
     analysis_stack = ['#']
-    analysis_stack.append('S')
+    analysis_stack.append('start_states')
 
     while len(analysis_stack) and len(str_stack):
         print('分析栈: ' + str(analysis_stack))

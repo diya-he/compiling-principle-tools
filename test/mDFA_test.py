@@ -1,14 +1,11 @@
-from finite_automata import DFA,minimalDFA
+from finite_automata import DFA
 import FAtools as fat
 dfa = DFA()
-minimalDFA = minimalDFA()
 
-fat.construct_from_file(dfa, '../data/dfa_test_2.json')
-minimalDFA.minimize_from_dfa(dfa)
-
-fat.print_fa(minimalDFA)
-
-fat.simple_state_fa(minimalDFA)
-fat.print_fa(minimalDFA)
-fat.save_fa_to_json(minimalDFA, '../data/minimal_dfa.json')
-
+fat.construct_from_file(dfa, '../data/dfa.json')
+S0s = [dfa.end_states, list(set(dfa.states).difference(set(dfa.end_states)))]
+dfa.minilization(S0s)
+print('----------------')
+fat.simple_state_fa(dfa)
+fat.print_fa(dfa)
+fat.save_fa_to_json(dfa, '../data/minimal_dfa.json')
