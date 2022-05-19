@@ -102,7 +102,7 @@ if __name__ == '__main__':
         print('状态栈:', status_stack)
         print('符号栈:', sym_stack)
         print('输入栈:', input_stack)
-        print('--------------------')
+        print('-------------------')
         analysis(status_stack, sym_stack, input_stack, action, goto)
 
     message('success', 'analysis success')
