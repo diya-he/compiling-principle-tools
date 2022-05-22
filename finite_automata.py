@@ -118,6 +118,7 @@ class DFA:
 
         self.states = mappings
         self.num_states = len(mappings)
+
         tmp_list = []
         for state in self.end_states:
             for map in mappings:
@@ -133,7 +134,7 @@ class DFA:
                     tmp_list.append(map)
                     break
         self.start_states = tmp_list
-
+        print(len(self.transition_functions))
         tmp_transition = []
         for transition in self.transition_functions:
             first = []
@@ -146,3 +147,4 @@ class DFA:
             if (first, transition[1], third) not in tmp_transition:
                 tmp_transition.append((first, transition[1], third))
         self.transition_functions = tmp_transition
+        print(len(self.transition_functions))

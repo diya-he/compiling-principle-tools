@@ -1,3 +1,6 @@
+import json
+
+
 def init_analysis_table():
     action = {
         '0': {
@@ -96,7 +99,9 @@ if __name__ == '__main__':
     status_stack = []
     status_stack.append('0')
 
-    action, goto = init_analysis_table()
+    json_table = json.load(open('./Table/Table1.json', 'r', encoding="utf-8"))
+    action = json_table['action']
+    goto = json_table['goto']
 
     while not len(input_stack) == 1:
         print('状态栈:', status_stack)
