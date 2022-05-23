@@ -53,6 +53,7 @@ def save_fa_to_json(fa, filepath):
         "start_states": fa.start_states,
         "transition_functions": fa.transition_functions
     }
+
     with open(filepath, "w") as json_file:
         json_dict = json.dump(dict, json_file)
 
