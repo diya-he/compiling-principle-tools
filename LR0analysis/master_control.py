@@ -76,7 +76,7 @@ def analysis(status_stack, sym_stack, input_stack, *args):
     else:
         lens = len(record) - 1
         for i in range(lens):
-            if sym_stack.pop() == record[lens - 1]:
+            if sym_stack.pop() == record[lens]:
                 status_stack.pop()
             else:
                 message('error', 'syntax error')

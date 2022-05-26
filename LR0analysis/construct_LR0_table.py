@@ -2,6 +2,7 @@ import copy
 import queue
 import json
 
+
 class LR:
     def __init__(self):
         self.Vn = ['E', 'A', 'B']
@@ -12,7 +13,6 @@ class LR:
         self.status = {}  # 存放状态编号及对应的项目集
         self.goto = {}  # 存放goto表  {0:{E:'1',A:'error',B:'error'}}
         self.action = {}  # 存放action表  {0:{a:'S2',b:'S3'}}
-
 
     def Project(self):  # 建立项目
         for f in self.production:
@@ -210,6 +210,7 @@ if __name__ == '__main__':
     a.createDFA()
     a.ACTION()
     a.GOTO()
-    # a.show()
+    a.show()
     a.output()
     a.covert_lr0to_json()
+
