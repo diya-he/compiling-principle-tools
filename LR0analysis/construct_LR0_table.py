@@ -103,6 +103,7 @@ class LR:
             temp = self.GO(self.status[i])  # 每个状态的GO
             for vn in self.Vn:   # 对非终结符遍历
                 if vn in temp.keys():  # 非终结符存在于状态的Go中
+                    number = None
                     for key, value in  self.status.items():
                         if set(value) == set(temp[vn]):
                             number = key  # 记录编号
