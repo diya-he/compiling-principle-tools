@@ -72,17 +72,17 @@ def analysis(status_stack, sym_stack, input_stack, *args):
         sym_stack.append(string)
         input_stack.pop()
     elif record == 'acc':
-        return
+        return 'acc'
     else:
         lens = len(record) - 1
         for i in range(lens):
-            if sym_stack.pop() == record[lens]:
+            if sym_stack.pop() == record[lens - i]:
                 status_stack.pop()
             else:
                 message('error', 'syntax error')
         sym_stack.append(record[0])
         status_stack.append(goto[status_stack[-1]][sym_stack[-1]])
-
+    return 'continue'
 
 if __name__ == '__main__':
     input_string = 'bccccccd#'
@@ -102,13 +102,13 @@ if __name__ == '__main__':
     json_table = json.load(open('./Table/LR0_2.json', 'r', encoding="utf-8"))
     action = json_table['action']
     goto = json_table['goto']
-
-    while not len(input_stack) == 1:
+    res = ''
+    while not res == 'acc':
         print('状态栈:', status_stack)
         print('符号栈:', sym_stack)
         print('输入栈:', input_stack)
         print('-------------------')
-        analysis(status_stack, sym_stack, input_stack, action, goto)
+        res = analysis(status_stack, sym_stack, input_stack, action, goto)
 
     message('success', 'analysis success')
 

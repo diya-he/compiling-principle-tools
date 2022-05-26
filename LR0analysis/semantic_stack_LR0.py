@@ -10,9 +10,9 @@ def message(status, message):
 
 
 class Value:
-    def __init__(self, val, s):
+    def __init__(self, val, scope):
         self.val = val
-        self.s = s
+        self.s = scope
 
 
 def semantic_action(record, analysis_stack):
@@ -67,8 +67,9 @@ def analysis(status_stack, sym_stack, input_stack, analysis_stack, *args):
         status_stack.append(goto[status_stack[-1]][sym_stack[-1]])
     return 'continue'
 
+
 if __name__ == '__main__':
-    input_string = '.101#'
+    input_string = '.10101#'
     input_stack = []
     for s in reversed(input_string):
         input_stack.append(s)
@@ -97,4 +98,3 @@ if __name__ == '__main__':
         res = analysis(status_stack, sym_stack, input_stack, analysis_stack, action, goto)
 
     message('success', 'analysis success')
-
