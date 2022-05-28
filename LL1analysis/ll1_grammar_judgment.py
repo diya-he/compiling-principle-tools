@@ -69,11 +69,12 @@ class LL1:
         for i in range(len(self.production)):
             self.__first_priv(self.production[i])
 
-    def __follow_priv(self):
+    def __follow_priv(self, head):
         pass
 
     def follow_solve(self):
-        pass
+        for i in range(len(self.production)):
+            self.__first_priv(self.production[i])
 
 
 if __name__ == '__main__':
