@@ -110,7 +110,7 @@ class LR:
                             break
                     self.goto[i][vn] = number
                 else:
-                    self.goto[i][vn] = 'error'
+                    self.goto[i][vn] = ' '
 
     def ACTION(self):
         vtx = copy.deepcopy(self.Vt)
@@ -120,7 +120,7 @@ class LR:
             if len(self.status[i]) == 1:  # 项目集只有一个项目
                 if self.status[i][0].startswith('S'):  # S->E·
                     for vt in self.Vt:
-                        self.action[i][vt] = 'error'
+                        self.action[i][vt] = ' '
                     self.action[i]['#'] = 'acc'
                 else:  #  填写rj的项目  E->aA·
                     temp = self.status[i][0].rstrip('·')  # 删去项目的·  E->aA
@@ -134,28 +134,29 @@ class LR:
                 temp = self.GO(self.status[i])  # 字典形式{a:[],b:[]}
                 for vt in vtx:
                     if vt in temp.keys():
+                        number = None
                         for key, value in self.status.items():  # 确定到哪一个状态
                             if set(value) == set(temp[vt]):
                                 number = key  # 返回状态编号
                                 break
                         self.action[i][vt] = 'S'+str(number)
                     else:
-                        self.action[i][vt] = 'error'
+                        self.action[i][vt] = ' '
 
     def output(self):   # 输出LR(0)分析表 表格形式
         print('LR(0)分析表'.center(85))
         print('状态'.center(5), 'ACTION'.center(50), 'GOTO'.center(30))
-        print('  '.center(10),end='')
+        print('  '.center(10), end='')
         for vt in self.Vt:  # action
-            print(vt.center(10),end='')
-        print('#'.center(10),end='')
+            print(vt.center(10), end='')
+        print('#'.center(10), end='')
         for vn in self.Vn:  # goto
-            print(vn.center(10),end='')
+            print(vn.center(10), end='')
         print() # 换行
         vtx = copy.deepcopy(self.Vt)
         vtx.append('#')
         for i in range(len(self.status)):  # 输出每一行
-            print(str(i).center(10),end='')
+            print(str(i).center(10), end='')
             for vt in vtx:
                 for key in self.action[i]:  # {0:{'b':'S1'}}
                     if vt == key:
@@ -214,4 +215,3 @@ if __name__ == '__main__':
     a.show()
     a.output()
     a.covert_lr0to_json()
-
