@@ -14,8 +14,8 @@ class LL1:
     def __init__(self):
         self.Vn = ['S', 'A', 'B', 'C', 'D']
         self.Vt = ['a', 'b', 'c', 'd']
-        self.start = 'S'  # 开始符号
-        self.production = ['S->bBc', 'A->aB', 'A->C', 'B->dD', 'C->aAC', 'C->$', 'D->bD', 'D->$']  # 产生式
+        self.start = 'S'
+        self.production = ['S->bBc', 'A->aB', 'A->C', 'B->dD', 'C->aAC', 'C->$', 'D->bD', 'D->$']
         self.isempty = {}
         self.first = {}
         self.follow = {}
