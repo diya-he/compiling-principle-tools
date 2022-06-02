@@ -1,53 +1,24 @@
-实现非常简单
-`json`文件解析如下:
-```json
-{
-  "num_states":2,
-  "symbols": ["a","b"],
-  "end_states": ["1"],
-  "start_states": ["0"],
-  "transition_functions": [
-    ["0", "a", "0"],
-    ["0", "a", "1"],
-    ["0", "b", "1"],
-    ["1", "b", "1"]
-  ]
-}
-```
+> 注: 本项目所有所需数据大部分使用JSON转化和存储，小部分暂时没来得及写，直接放进类的初始化里面。解决很简单，写一个读取JSON的函数初始化类，实现数据向JSON的迁移。JSON文件简单易看懂，这里就不再赘述它们各自的含义。
+* 项目待解决问题
+  * 少部分代码有注释，大部分代码缺少注释
+  * LL1递归下降和表驱动并不是使用JSON读取编写的，所以通过判断LL1文法代码中生成的JSON文件无法在表驱动和递归下降代码的执行（虽然LL1文法生成JSON文件代码还没写）
+  * 带语义栈的LR分析语法过于绝对，指定一个文法写的，并不具备通用性，希望可以改善
+  * 最小化DFA代码有些许Bug，一些文法执行结果错误，待解决
 
-`finite_automata.py`封装了几个类，本代码使用造表法进行转化，时间复杂度初步计算为`O(n^3)`
-等项目写完后预计会写一份完整的使用文档
+# 项目结构
+`/data/`文件夹存放的是NFA、DFA以及最小化DFA的JSON文件
 
-```python
-#NFA to DFA test
-from finite_automata import NFA, DFA
-import FAtools as fat
-nfa = NFA()
-dfa = DFA()
+`/LL1analysis/`文件夹存放四个代码，分别是基于L-翻译模式的自顶向下语义计算，LL1文法的判定、递归下降解决LL1文法分析、表驱动法解决LL1文法分析
 
-filepath = '../data/nfa.json'
-fat.construct_from_file(nfa, filepath)
-# fat.print_fa(nfa)
+`/LR0analysis/` 1、`/Table/`文件夹存放构建的LR0分析表;2、`/Grammer/`文件夹存放文法JSON文件。文件夹下其它代码分别是构建LR0分析表代码、LR0主控程序、和带语义栈的LR分析
 
-dfa.convert_from_nfa(nfa)
-filepath = "../data/dfa.json"
-fat.simple_state_fa(dfa)
-fat.save_fa_to_json(dfa, filepath)
-fat.print_fa(dfa)
-```
-```python
-#minimize DFA test
-from finite_automata import DFA,minimalDFA
-import FAtools as fat
-dfa = DFA()
-minimalDFA = minimalDFA()
+`/test/`文件夹下存放的是最小化DFA和NFA到DFA转化的测试文件
 
-fat.construct_from_file(dfa, '../data/dfa.json')
-minimalDFA.minimize_from_dfa(dfa)
+`FAtools.py`封装了自动机的一些工具类，方便使用减少代码冗余，具体使用可以在`/test/`里面看见，后期项目成型考虑编写一份pages文档，提供调用
 
-fat.print_fa(minimalDFA)
+`finite_automata`里面有两个类，分别是DFA和NFA
 
-fat.simple_state_fa(minimalDFA)
-# fat.print_fa(minimalDFA)
-fat.save_fa_to_json(minimalDFA, '../data/minimal_dfa.json')
-```
+# 后期工作
+
+因为本人时间有限，暂时无法继续编写此编译原理项目，希望有志同道合的人可以继续编写并且修改此项目的bug，解决一些问题，如果有大神愿意将其开发完整并且封装成一个python的包就更好了。当然，也欢迎你为了应付编译原理以及实验的课程而fork本项目，本项目还有很多在编译原理上未完成的代码以及任务，些许bug需要调试，所以我们互相学习也许能获得更多。
+
